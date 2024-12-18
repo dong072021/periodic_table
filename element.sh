@@ -1,4 +1,5 @@
 
+
 #!/bin/bash
 
 # Set up the PSQL command with database connection
