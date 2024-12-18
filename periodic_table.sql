@@ -62,7 +62,7 @@ ALTER TABLE public.elements OWNER TO freecodecamp;
 
 CREATE TABLE public.properties (
     atomic_number integer NOT NULL,
-    atomic_mass numeric NOT NULL,
+    atomic_mass numeric(9,6) NOT NULL,
     melting_point_celsius numeric NOT NULL,
     boiling_point_celsius numeric NOT NULL,
     type_id integer NOT NULL
@@ -77,7 +77,7 @@ ALTER TABLE public.properties OWNER TO freecodecamp;
 
 CREATE TABLE public.types (
     type_id integer NOT NULL,
-    type character varying NOT NULL
+    type character varying(30) NOT NULL
 );
 
 
@@ -132,25 +132,25 @@ INSERT INTO public.elements VALUES (10, 'Ne', 'Neon');
 -- Data for Name: properties; Type: TABLE DATA; Schema: public; Owner: freecodecamp
 --
 
-INSERT INTO public.properties VALUES (1, 1.008, -259.1, -252.9, 1);
-INSERT INTO public.properties VALUES (2, 4.0026, -272.2, -269, 2);
-INSERT INTO public.properties VALUES (3, 6.94, 180.54, 1342, 1);
-INSERT INTO public.properties VALUES (4, 9.0122, 1287, 2470, 2);
-INSERT INTO public.properties VALUES (5, 10.81, 2075, 4000, 3);
-INSERT INTO public.properties VALUES (6, 12.011, 3550, 4027, 1);
-INSERT INTO public.properties VALUES (7, 14.007, -210.1, -195.8, 1);
-INSERT INTO public.properties VALUES (8, 15.999, -218, -183, 1);
-INSERT INTO public.properties VALUES (9, 18.998, -220, -188.1, 1);
-INSERT INTO public.properties VALUES (10, 20.18, -248.6, -246.1, 1);
+INSERT INTO public.properties VALUES (1, 1.008000, -259.1, -252.9, 3);
+INSERT INTO public.properties VALUES (2, 4.002600, -272.2, -269, 3);
+INSERT INTO public.properties VALUES (3, 6.940000, 180.54, 1342, 1);
+INSERT INTO public.properties VALUES (4, 9.012200, 1287, 2470, 1);
+INSERT INTO public.properties VALUES (5, 10.810000, 2075, 4000, 2);
+INSERT INTO public.properties VALUES (6, 12.011000, 3550, 4027, 3);
+INSERT INTO public.properties VALUES (7, 14.007000, -210.1, -195.8, 3);
+INSERT INTO public.properties VALUES (8, 15.999000, -218, -183, 3);
+INSERT INTO public.properties VALUES (9, 18.998000, -220, -188.1, 1);
+INSERT INTO public.properties VALUES (10, 20.180000, -248.6, -246.1, 1);
 
 
 --
 -- Data for Name: types; Type: TABLE DATA; Schema: public; Owner: freecodecamp
 --
 
-INSERT INTO public.types VALUES (1, 'Nonmetal');
-INSERT INTO public.types VALUES (2, 'Metal');
-INSERT INTO public.types VALUES (3, 'Metalloid');
+INSERT INTO public.types VALUES (1, 'metal');
+INSERT INTO public.types VALUES (2, 'metalloid');
+INSERT INTO public.types VALUES (3, 'nonmetal');
 
 
 --
@@ -201,19 +201,11 @@ ALTER TABLE ONLY public.types
 
 
 --
--- Name: elements unique_name; Type: CONSTRAINT; Schema: public; Owner: freecodecamp
+-- Name: elements unique_symbol_name; Type: CONSTRAINT; Schema: public; Owner: freecodecamp
 --
 
 ALTER TABLE ONLY public.elements
-    ADD CONSTRAINT unique_name UNIQUE (name);
-
-
---
--- Name: elements unique_symbol; Type: CONSTRAINT; Schema: public; Owner: freecodecamp
---
-
-ALTER TABLE ONLY public.elements
-    ADD CONSTRAINT unique_symbol UNIQUE (symbol);
+    ADD CONSTRAINT unique_symbol_name UNIQUE (symbol, name);
 
 
 --
@@ -221,7 +213,7 @@ ALTER TABLE ONLY public.elements
 --
 
 ALTER TABLE ONLY public.properties
-    ADD CONSTRAINT fk_atomic_number FOREIGN KEY (atomic_number) REFERENCES public.elements(atomic_number);
+    ADD CONSTRAINT fk_atomic_number FOREIGN KEY (atomic_number) REFERENCES public.elements(atomic_number) ON DELETE CASCADE;
 
 
 --
@@ -229,7 +221,7 @@ ALTER TABLE ONLY public.properties
 --
 
 ALTER TABLE ONLY public.properties
-    ADD CONSTRAINT fk_type_id FOREIGN KEY (type_id) REFERENCES public.types(type_id);
+    ADD CONSTRAINT fk_type_id FOREIGN KEY (type_id) REFERENCES public.types(type_id) ON DELETE RESTRICT;
 
 
 --
